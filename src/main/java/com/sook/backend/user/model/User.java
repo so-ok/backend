@@ -2,8 +2,10 @@ package com.sook.backend.user.model;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -14,6 +16,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Index;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.sook.backend.common.model.BaseModel;
 
@@ -41,8 +46,17 @@ public class User extends BaseModel {
 	@Column(name = "username", nullable = false)
 	private String username;
 
-	@Column(name = "password", nullable = false)
+	@Column(name = "password")
 	private String password;
+
+	@Column(name = "email", unique = true, nullable = false)
+	private String email;
+
+	@Column(name = "image")
+	private String image;
+
+	@Column(name = "oauth_provider", nullable = false)
+	private String oauthProvider;
 
 	@Builder.Default
 	private boolean enabled = true;
@@ -54,4 +68,17 @@ public class User extends BaseModel {
 	private Set<Role> roles = new HashSet<>();
 
 	private LocalDateTime lastLogin;
+
+	public User updateImage(String imageUrl) {
+		image = imageUrl;
+		return this;
+	}
+
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return roles
+			.stream()
+			.map(Role::key)
+			.map(SimpleGrantedAuthority::new)
+			.collect(Collectors.toList());
+	}
 }

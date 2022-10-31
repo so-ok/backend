@@ -2,6 +2,8 @@ spring:
   config:
     import:
       - classpath:application-datasource.yml
+      - classpath:application-settings.yml
+      - classpath:application-oauth.yml
   jpa:
     hibernate:
       ddl-auto: update
