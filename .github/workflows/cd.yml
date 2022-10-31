@@ -3,7 +3,7 @@ name: Spring Boot CD
 # Event Trigger
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
