@@ -1,0 +1,24 @@
+spring:
+  config:
+    import:
+      - classpath:application-datasource.yml
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+  h2:
+    console:
+      enabled: false
+  data:
+    web.pageable:
+      default-page-size: 30
+      max-page-size: 1000
+      one-indexed-parameters: true
+logging:
+  level:
+    root: info
