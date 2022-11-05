@@ -38,6 +38,8 @@ out/
 
 ### Secrets ###
 src/main/resources/application-dev*.yml
+src/**/resources/data.sql
+src/**/resources/schema.sql
 
 ### GENERATED ###
 src/main/generated/
