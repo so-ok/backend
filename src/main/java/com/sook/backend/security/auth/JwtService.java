@@ -1,7 +1,5 @@
 package com.sook.backend.security.auth;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -11,7 +9,7 @@ import com.sook.backend.security.auth.dto.AuthDto;
 import com.sook.backend.security.auth.dto.TokenDto;
 import com.sook.backend.security.auth.key.JwtKey;
 import com.sook.backend.user.model.User;
-import com.sook.backend.user.repository.UserRepository;
+import com.sook.backend.user.service.UserService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtService {
 
-	private final UserRepository memberRepository;
+	private final UserService userService;
 	private final JwtKey accessKey;
 	private final JwtKey refreshKey;
 
@@ -38,7 +36,7 @@ public class JwtService {
 	public Authentication getAuthentication(String accessToken) {
 		Claims claims = accessKey.parse(accessToken);
 		String email = claims.getSubject();
-		User user = findUser(email);
+		User user = userService.findUser(email);
 
 		AuthDto authDTO = AuthDto.builder()
 			.id(user.id())
@@ -56,11 +54,6 @@ public class JwtService {
 
 		String accessToken = accessKey.generateTokenWith(claims);
 		return new TokenDto.TokenResponseDto(accessToken);
-	}
-
-	private User findUser(String email) {
-		return memberRepository.findByEmail(email)
-			.orElseThrow(() -> new NoSuchElementException("유효하지 않은 AccessToken입니다"));
 	}
 
 	private Claims buildClaims(OAuth2User oAuth2User) {

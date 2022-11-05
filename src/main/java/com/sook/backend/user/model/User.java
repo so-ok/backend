@@ -69,9 +69,8 @@ public class User extends BaseModel {
 
 	private LocalDateTime lastLogin;
 
-	public User updateImage(String imageUrl) {
+	public void updateImage(String imageUrl) {
 		image = imageUrl;
-		return this;
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
