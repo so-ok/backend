@@ -30,9 +30,12 @@ public class ThirdPartyOAuth2UserService implements OAuth2UserService<OAuth2User
 		OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
-		String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
-			.getUserInfoEndpoint().getUserNameAttributeName();
-		OAuth2UserAttribute attributes = OAuth2UserAttributeFactory.from(registrationId, oAuth2User.getAttributes(), userNameAttributeName);
+		String userNameAttributeName = userRequest.getClientRegistration()
+			.getProviderDetails()
+			.getUserInfoEndpoint()
+			.getUserNameAttributeName();
+		OAuth2UserAttribute attributes = OAuth2UserAttributeFactory.from(registrationId, oAuth2User.getAttributes(),
+			userNameAttributeName);
 
 		User savedUser = saveUser(attributes);
 		return new DefaultOAuth2User(savedUser.getAuthorities(), attributes.getAttributes(), userNameAttributeName);
@@ -42,7 +45,8 @@ public class ThirdPartyOAuth2UserService implements OAuth2UserService<OAuth2User
 		Optional<User> userOptional = userRepository.findByEmail(attributes.email());
 		if (userOptional.isPresent()) {
 			User user = userOptional.get();
-			return user.updateImage(attributes.profileImage());
+			user.updateImage(attributes.profileImage());
+			return user;
 		}
 
 		return userRepository.save(attributes.toEntity());
