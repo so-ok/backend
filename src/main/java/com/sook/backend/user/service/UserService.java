@@ -10,6 +10,7 @@ import com.sook.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
 
