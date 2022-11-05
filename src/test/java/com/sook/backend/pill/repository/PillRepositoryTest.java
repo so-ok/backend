@@ -67,7 +67,7 @@ class PillRepositoryTest extends AbstractSoOkTest {
 	@DisplayName("search() 테스트 - attentions, ingredients")
 	public void testSearchByAttentionAndIngredients() throws Exception {
 		//given
-		List<String> attentions = List.of("장 건강", "간 건강");
+		List<String> attentions = List.of("눈 건강", "간 건강");
 		List<String> ingredients = List.of("비타민A");
 
 		PillSearchDto search = PillSearchDto.builder()
@@ -94,6 +94,6 @@ class PillRepositoryTest extends AbstractSoOkTest {
 			}));
 		}));
 
-		assertEquals(26, pills.size());
+		assertEquals(195, pills.size());
 	}
 }

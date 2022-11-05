@@ -9,6 +9,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.sook.backend.attention.model.AttentionPill;
 import com.sook.backend.attention.model.QAttention;
 import com.sook.backend.attention.model.QAttentionPill;
+import com.sook.backend.common.repository.OrderByNull;
 import com.sook.backend.pill.dto.PillSearchDto;
 import com.sook.backend.pill.model.Pill;
 import com.sook.backend.pill.model.PillIngredient;
@@ -45,7 +46,9 @@ public class PillSearchRepositoryImpl
 
 			JPQLQuery<AttentionPill> attentionPillQuery = from(qAttentionPill)
 					.join(qAttention).on(qAttentionPill.attention.id.eq(qAttention.id))
-					.where(qAttention.name.in(filteredAttentions));
+					.where(qAttention.name.in(filteredAttentions))
+					.groupBy(qAttentionPill.pill.id)
+					.orderBy(OrderByNull.DEFAULT);
 
 			JPQLQuery<Long> pillIds = attentionPillQuery.select(qAttentionPill.pill.id);
 
@@ -64,7 +67,9 @@ public class PillSearchRepositoryImpl
 
 			JPQLQuery<PillIngredient> pillIngredientQuery = from(qPillIngredient)
 					.join(qIngredient).on(qPillIngredient.ingredient.id.eq(qIngredient.id))
-					.where(qIngredient.name.in(filteredIngredients));
+					.where(qIngredient.name.in(filteredIngredients))
+					.groupBy(qPillIngredient.pill.id)
+					.orderBy(OrderByNull.DEFAULT);
 
 			JPQLQuery<Long> pillIds = pillIngredientQuery.select(qPillIngredient.pill.id);
 
