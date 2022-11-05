@@ -37,3 +37,6 @@ out/
 .vscode/
 
 ### Secrets ###
+
+### GENERATED ###
+src/main/generated/
