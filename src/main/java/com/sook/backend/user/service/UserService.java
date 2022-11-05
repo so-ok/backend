@@ -3,6 +3,7 @@ package com.sook.backend.user.service;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sook.backend.user.model.User;
 import com.sook.backend.user.repository.UserRepository;
