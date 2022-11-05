@@ -37,6 +37,7 @@ out/
 .vscode/
 
 ### Secrets ###
+src/main/resources/application-dev*.yml
 
 ### GENERATED ###
 src/main/generated/
