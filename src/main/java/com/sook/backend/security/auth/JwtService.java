@@ -1,7 +1,5 @@
 package com.sook.backend.security.auth;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
