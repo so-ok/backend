@@ -18,6 +18,12 @@ import lombok.RequiredArgsConstructor;
 public class PillService {
 	private final PillRepository pillRepository;
 
+	public PillDto findById(Long id) {
+		Pill pill = pillRepository.findById(id)
+				.orElseThrow();
+		return PillDto.of(pill);
+	}
+
 	public PillDto searchOne(PillSearchDto searchDto) {
 		Pill pill = pillRepository.searchOne(searchDto).orElseThrow();
 		return PillDto.of(pill);

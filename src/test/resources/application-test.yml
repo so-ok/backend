@@ -10,6 +10,7 @@ spring:
     properties:
       hibernate:
         generate_statistics: true
+    defer-datasource-initialization: true
   thymeleaf:
     cache: false
 logging:
