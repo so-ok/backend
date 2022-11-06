@@ -1,0 +1,29 @@
+package com.sook.backend.pill.service;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.sook.backend.pill.dto.PillDto;
+import com.sook.backend.pill.dto.PillSearchDto;
+import com.sook.backend.pill.model.Pill;
+import com.sook.backend.pill.repository.PillRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class PillService {
+	private final PillRepository pillRepository;
+
+	public PillDto searchOne(PillSearchDto searchDto) {
+		Pill pill = pillRepository.searchOne(searchDto).orElseThrow();
+		return PillDto.of(pill);
+	}
+
+	public Page<PillDto> search(PillSearchDto searchDto, Pageable pageable) {
+		return pillRepository.search(searchDto, pageable).map(PillDto::of);
+	}
+}
