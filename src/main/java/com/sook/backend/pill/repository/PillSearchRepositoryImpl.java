@@ -17,7 +17,7 @@ import com.sook.backend.pill.model.QIngredient;
 import com.sook.backend.pill.model.QPill;
 import com.sook.backend.pill.model.QPillIngredient;
 
-public class PillSearchRepositoryImpl
+class PillSearchRepositoryImpl
 		extends QuerydslRepositorySupport
 		implements PillSearchRepository {
 

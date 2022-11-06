@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sook.backend.AbstractSoOkTest;
@@ -95,5 +97,39 @@ class PillRepositoryTest extends AbstractSoOkTest {
 		}));
 
 		assertEquals(195, pills.size());
+	}
+
+	@Test
+	@DisplayName("search() with Paging 테스트 - attentions, ingredients")
+	public void testSearchByAttentionAndIngredientsPageable() throws Exception {
+		//given
+		List<String> attentions = List.of("눈 건강", "간 건강");
+		List<String> ingredients = List.of("비타민A");
+
+		PillSearchDto search = PillSearchDto.builder()
+				.attentions(attentions)
+				.ingredients(ingredients)
+				.build();
+
+		//when
+		Page<Pill> pills = pillRepository.search(search, PageRequest.of(0, 30));
+
+		//then
+		pills.forEach((pill -> {
+			pill.attentionPills().forEach((attentionPill -> {
+				anyOf(search.attentions()
+						.stream()
+						.map(attention -> attentionPill.attention().name().contains(attention))
+						.toList());
+			}));
+			pill.ingredients().forEach((pillIngredient -> {
+				anyOf(search.ingredients()
+						.stream()
+						.map(ingredient -> pillIngredient.name().contains(ingredient))
+						.toList());
+			}));
+		}));
+
+		assertEquals(195, pills.getTotalElements());
 	}
 }
