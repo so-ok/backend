@@ -18,13 +18,13 @@ import com.sook.backend.pill.dto.PillSearchDto;
 import com.sook.backend.pill.model.Pill;
 
 @Transactional
+@Disabled
 class PillRepositoryTest extends AbstractSoOkTest {
 
 	@Autowired
 	PillRepository pillRepository;
 
 	@Test
-	@Disabled
 	@DisplayName("search() 테스트 - name")
 	public void testSearchByName() throws Exception {
 		//given
@@ -43,7 +43,6 @@ class PillRepositoryTest extends AbstractSoOkTest {
 	}
 
 	@Test
-	@Disabled
 	@DisplayName("search() 테스트 - attentions")
 	public void testSearchByAttention() throws Exception {
 		//given
@@ -69,7 +68,6 @@ class PillRepositoryTest extends AbstractSoOkTest {
 	}
 
 	@Test
-	@Disabled
 	@DisplayName("search() 테스트 - attentions, ingredients")
 	public void testSearchByAttentionAndIngredients() throws Exception {
 		//given
@@ -84,7 +82,7 @@ class PillRepositoryTest extends AbstractSoOkTest {
 		//when
 		List<Pill> pills = pillRepository.search(search);
 
-		//then
+		//then`
 		pills.forEach((pill -> {
 			pill.attentionPills().forEach((attentionPill -> {
 				anyOf(search.attentions()
