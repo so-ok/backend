@@ -23,10 +23,7 @@ public class PillController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<PillDto> getPill(@PathVariable("id") Long id) {
-		PillSearchDto search = PillSearchDto.builder()
-				.id(id)
-				.build();
-		PillDto pill = pillService.searchOne(search);
+		PillDto pill = pillService.findById(id);
 		return ResponseEntity.ok(pill);
 	}
 
