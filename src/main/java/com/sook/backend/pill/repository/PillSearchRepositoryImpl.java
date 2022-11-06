@@ -30,6 +30,11 @@ class PillSearchRepositoryImpl
 		QPill qPill = QPill.pill;
 		JPQLQuery<Pill> query = from(qPill);
 
+		if (search.id() != null) {
+			query.where(qPill.id.eq(search.id()));
+			return query;
+		}
+
 		if (search.name() != null) {
 			query.where(
 					qPill.name.contains(search.name())
