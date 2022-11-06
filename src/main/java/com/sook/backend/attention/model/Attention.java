@@ -40,7 +40,6 @@ public class Attention extends BaseModel {
 	@Builder.Default
 	private List<AttentionPill> attentionPills = new ArrayList<>();
 
-	/*=====BUSINESS METHODS=====*/
 	public List<Ingredient> ingredients() {
 		return attentionIngredients.stream()
 				.map(AttentionIngredient::ingredient)

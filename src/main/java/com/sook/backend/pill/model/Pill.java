@@ -36,7 +36,6 @@ public class Pill extends BaseModel {
 	@Builder.Default
 	private List<AttentionPill> attentionPills = new ArrayList<>();
 
-	/*=====BUSINESS METHODS=====*/
 	public List<Ingredient> ingredients() {
 		return pillIngredients.stream()
 				.map(PillIngredient::ingredient)
