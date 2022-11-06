@@ -2,7 +2,7 @@ PROJECT_NAME=backend
 DIRECTORY=/home/ubuntu/app
 
 echo "PID Check..."
-CURRENT_PID=$(ps -ef | grep java | grep Server | awk '{print $2}')
+CURRENT_PID=$(ps -ef | grep java | grep $PROJECT_NAME | awk '{print $2}')
 
 echo "Running PID: {$CURRENT_PID}"
 
@@ -11,7 +11,7 @@ if [ -z ${CURRENT_PID} ] ; then
 else
         echo "Kill Current PID"
         kill -9 $CURRENT_PID
-        sleep 10
+        sleep 5
 fi
 
 echo "Running..."
