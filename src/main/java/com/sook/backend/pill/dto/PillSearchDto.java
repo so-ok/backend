@@ -7,7 +7,6 @@ import com.sook.backend.common.dto.SearchDto;
 import lombok.Builder;
 
 public record PillSearchDto(
-		Long id,
 		String name,
 		List<String> attentions,
 		List<String> ingredients
