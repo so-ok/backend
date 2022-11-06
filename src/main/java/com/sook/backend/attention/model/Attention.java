@@ -3,8 +3,10 @@ package com.sook.backend.attention.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,12 +21,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "attentions")
+@Table(name = "attentions", indexes = {
+		@Index(name = "attentions_name_uindex", columnList = "name", unique = true)
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Getter
 public class Attention extends BaseModel {
+	@Column(unique = true)
 	private String name;
 
 	@OneToMany(mappedBy = "attention", fetch = FetchType.LAZY)

@@ -3,10 +3,12 @@ package com.sook.backend.pill.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,13 +23,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "pill_ingredients")
+@Table(name = "pill_ingredients", indexes = {
+		@Index(name = "pill_ingredients_name_uindex", columnList = "name", unique = true)
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
 public class Ingredient extends BaseModel {
 
+	@Column(unique = true)
 	private String name;
 
 	@Enumerated(EnumType.STRING)
