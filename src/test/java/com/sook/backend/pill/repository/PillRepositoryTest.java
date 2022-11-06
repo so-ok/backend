@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ class PillRepositoryTest extends AbstractSoOkTest {
 	PillRepository pillRepository;
 
 	@Test
+	@Disabled
 	@DisplayName("search() 테스트 - name")
 	public void testSearchByName() throws Exception {
 		//given
@@ -41,6 +43,7 @@ class PillRepositoryTest extends AbstractSoOkTest {
 	}
 
 	@Test
+	@Disabled
 	@DisplayName("search() 테스트 - attentions")
 	public void testSearchByAttention() throws Exception {
 		//given
@@ -66,6 +69,7 @@ class PillRepositoryTest extends AbstractSoOkTest {
 	}
 
 	@Test
+	@Disabled
 	@DisplayName("search() 테스트 - attentions, ingredients")
 	public void testSearchByAttentionAndIngredients() throws Exception {
 		//given
