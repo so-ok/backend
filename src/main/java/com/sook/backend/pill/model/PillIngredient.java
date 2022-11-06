@@ -1,6 +1,11 @@
 package com.sook.backend.pill.model;
 
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -25,4 +30,10 @@ public class PillIngredient extends BaseModel {
 
 	@ManyToOne
 	private Ingredient ingredient;
+
+	@Column(columnDefinition = "decimal(34, 10)")
+	private BigDecimal amount;
+
+	@Enumerated(EnumType.STRING)
+	private IngredientUnit unit;
 }

@@ -1,7 +1,7 @@
 app:
   auth:
-    accessTokenSecret: ${ACCESS_TOKEN_SECRET}
-    refreshTokenSecret: ${REFRESH_TOKEN_SECRET}
+    accessTokenSecret: ${ACCESS_TOKEN_SECRET:${random.value}${random.value}}
+    refreshTokenSecret: ${REFRESH_TOKEN_SECRET:${random.value}${random.value}}
     accessTokenExpiry: 86400000
     refreshTokenExpiry: 604800000
 
