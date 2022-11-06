@@ -33,4 +33,4 @@ frontend:
   redirectUri: http://localhost:3000
   authorizedRedirectUris: >
     http://localhost:3000.*,
-    https://example.com.*
+    https://.*sookfe.vercel.app.*
