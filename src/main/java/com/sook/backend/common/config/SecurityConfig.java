@@ -23,49 +23,50 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final AccessDeniedHandler accessDeniedHandler;
-    private final JwtService jwtService;
-    private final ThirdPartyOAuth2UserService thirdPartyOAuth2UserService;
-    private final OAuth2SuccessHandler successHandler;
-    private final OAuth2FailureHandler failureHandler;
-    private final CookieOAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final AccessDeniedHandler accessDeniedHandler;
+	private final JwtService jwtService;
+	private final ThirdPartyOAuth2UserService thirdPartyOAuth2UserService;
+	private final OAuth2SuccessHandler successHandler;
+	private final OAuth2FailureHandler failureHandler;
+	private final CookieOAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.csrf().disable()
 
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
 
-                .formLogin().disable()
-                .httpBasic().disable()
+				.formLogin().disable()
+				.httpBasic().disable()
 
-                .authorizeRequests()
-                .antMatchers("/docs", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
-                .antMatchers("/auth/renew").permitAll()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .anyRequest().authenticated()
+				.authorizeRequests()
+				.antMatchers("/docs", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
+				.antMatchers("/auth/renew").permitAll()
+				.antMatchers("/api/pill/**").permitAll()
+				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+				.anyRequest().authenticated()
 
-                .and()
-                .oauth2Login()
-                .authorizationEndpoint()
-                .authorizationRequestRepository(oAuth2AuthorizationRequestRepository)
-                .and()
-                .userInfoEndpoint()
-                .userService(thirdPartyOAuth2UserService)
-                .and()
-                .successHandler(successHandler)
-                .failureHandler(failureHandler)
-                .and()
+				.and()
+				.oauth2Login()
+				.authorizationEndpoint()
+				.authorizationRequestRepository(oAuth2AuthorizationRequestRepository)
+				.and()
+				.userInfoEndpoint()
+				.userService(thirdPartyOAuth2UserService)
+				.and()
+				.successHandler(successHandler)
+				.failureHandler(failureHandler)
+				.and()
 
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler);
+				.exceptionHandling()
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.accessDeniedHandler(accessDeniedHandler);
 
-        http.addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+		return http.build();
+	}
 }
