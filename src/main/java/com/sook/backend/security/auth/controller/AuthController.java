@@ -21,9 +21,9 @@ public class AuthController {
 
 	private final JwtService jwtService;
 
-	@ApiOperation(value = "토큰 갱신",notes = "Refresh Token 필요")
-	@GetMapping(path = "renew/{refreshToken}")
 	@NoApiAuth
+	@ApiOperation(value = "토큰 갱신", notes = "Refresh Token 필요")
+	@GetMapping(path = "renew/{refreshToken}")
 	public TokenDto.TokenResponseDto renewToken(@PathVariable String refreshToken) {
 		return jwtService.renew(refreshToken);
 	}
