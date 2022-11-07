@@ -22,6 +22,7 @@ import springfox.documentation.service.HttpAuthenticationScheme;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.OperationContext;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.DocExpansion;
@@ -85,8 +86,12 @@ public class SwaggerConfig implements WebMvcConfigurer {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(securityReferences())
-                .operationSelector(operationContext -> operationContext.findAnnotation(NoApiAuth.class).isEmpty())
+                .operationSelector(this::needsAuth)
                 .build();
+    }
+
+    private boolean needsAuth(OperationContext operationContext) {
+        return operationContext.findAnnotation(NoApiAuth.class).isEmpty();
     }
 
     private List<SecurityReference> securityReferences() {
