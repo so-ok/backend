@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,7 @@ public class PillController {
 
 	@NoApiAuth
 	@ApiOperation("영양제 검색")
-	@GetMapping("/search")
+	@PostMapping("/search")
 	public ResponseEntity<Page<PillDto>> search(@RequestBody PillSearchDto searchDto, Pageable pageable) {
 		Page<PillDto> pillDtos = pillService.search(searchDto, pageable);
 		return ResponseEntity.ok(pillDtos);
