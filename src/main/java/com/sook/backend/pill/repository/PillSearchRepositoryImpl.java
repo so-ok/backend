@@ -78,6 +78,11 @@ class PillSearchRepositoryImpl
 			);
 		}
 
+		if (pageable != null) {
+			query.limit(pageable.getPageSize());
+			query.offset(pageable.getOffset());
+		}
+
 		return query;
 	}
 }
