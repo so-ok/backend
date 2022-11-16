@@ -1,7 +1,7 @@
 package com.sook.backend.security.auth.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,12 +19,12 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = "🔑 인증")
 public class AuthController {
 
-	private final JwtService jwtService;
+    private final JwtService jwtService;
 
-	@NoApiAuth
-	@ApiOperation(value = "토큰 갱신", notes = "Refresh Token 필요")
-	@GetMapping(path = "renew/{refreshToken}")
-	public TokenDto.TokenResponseDto renewToken(@PathVariable String refreshToken) {
-		return jwtService.renew(refreshToken);
-	}
+    @NoApiAuth
+    @ApiOperation(value = "토큰 갱신", notes = "Refresh Token 필요")
+    @PostMapping(path = "renew")
+    public TokenDto renewToken(@RequestBody TokenDto tokenDto) {
+        return jwtService.renew(tokenDto.refreshToken());
+    }
 }
