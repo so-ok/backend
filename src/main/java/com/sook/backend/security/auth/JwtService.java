@@ -54,11 +54,11 @@ public class JwtService {
         return accessKey.validate(accessToken);
     }
 
-    public TokenDto.TokenResponseDto renew(String refreshToken) {
+    public TokenDto renew(String refreshToken) {
         Claims claims = refreshKey.parse(refreshToken);
 
         String accessToken = accessKey.generateTokenWith(claims);
-        return new TokenDto.TokenResponseDto(accessToken);
+        return new TokenDto(accessToken);
     }
 
     private Claims buildClaims(OAuth2User oAuth2User) {

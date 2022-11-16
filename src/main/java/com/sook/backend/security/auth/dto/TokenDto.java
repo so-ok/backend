@@ -1,21 +1,16 @@
 package com.sook.backend.security.auth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
 
-public class TokenDto {
+public record TokenDto(
+        String refreshToken
+) {
+    @Builder
+    public TokenDto {
+    }
 
-	@AllArgsConstructor
-	@Getter
-	public static class TokenRequestDto {
-
-		private String refreshToken;
-	}
-
-	@AllArgsConstructor
-	@Getter
-	public static class TokenResponseDto {
-
-		private String accessToken;
-	}
+    @Override
+    public String toString() {
+        return "refreshToken";
+    }
 }
