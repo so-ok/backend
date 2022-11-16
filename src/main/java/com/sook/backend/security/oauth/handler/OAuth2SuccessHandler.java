@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -44,7 +45,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 	}
 
 	private String getTargetUrl(HttpServletRequest request, Authentication authentication) {
-		DefaultOAuth2User oAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
+		OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
 
 		String accessToken = jwtService.generateAccessToken(oAuth2User);
 		String refreshToken = jwtService.generateRefreshToken(oAuth2User);
