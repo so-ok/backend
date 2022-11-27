@@ -46,6 +46,7 @@ public class SecurityConfig {
 				.antMatchers("/docs", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
 				.antMatchers("/auth/renew/**").permitAll()
 				.antMatchers("/api/pill/**").permitAll()
+				.antMatchers("/api/user/{email}").permitAll()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 				.anyRequest().authenticated()
 
