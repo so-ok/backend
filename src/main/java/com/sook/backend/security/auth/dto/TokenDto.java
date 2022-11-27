@@ -3,7 +3,7 @@ package com.sook.backend.security.auth.dto;
 import lombok.Builder;
 
 public record TokenDto(
-        String refreshToken
+        String token
 ) {
     @Builder
     public TokenDto {
@@ -11,6 +11,6 @@ public record TokenDto(
 
     @Override
     public String toString() {
-        return "refreshToken";
+        return "token";
     }
 }
