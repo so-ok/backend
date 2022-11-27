@@ -41,9 +41,7 @@ public class JwtService {
         String email = claims.getSubject();
         UserDto userDto = userService.findBy(email);
 
-        AuthDto authDto = AuthDto.builder()
-                .email(userDto.email())
-                .build();
+        AuthDto authDto = new AuthDto(userDto.email());
         List<SimpleGrantedAuthority> authorities = userDto.authorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.name()))
                 .toList();
