@@ -1,10 +1,9 @@
 package com.sook.backend.user.service;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sook.backend.common.exception.UserNotFoundException;
 import com.sook.backend.user.dto.UserDto;
 import com.sook.backend.user.model.User;
 import com.sook.backend.user.repository.UserRepository;
@@ -20,7 +19,7 @@ public class UserService {
 
     private User findUser(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("없는 유저입니다")); // TODO:replace with custom Exception
+                .orElseThrow(UserNotFoundException::new);
     }
 
     public UserDto findBy(String email) {
