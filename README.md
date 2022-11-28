@@ -4,6 +4,6 @@
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/so-ok/backend)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/so-ok/backend)
 ![GitHub issues](https://img.shields.io/github/issues/so-ok/backend) <br/>
-![Test Server Status](https://img.shields.io/website?label=test+server&url=https://not-yet)
+![Test Server Status](https://img.shields.io/website?label=test+server&url=https://api.so-ok.cf/docs)
 
 # Resources
