@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.sook.backend.common.exception.dto.ExceptionDto;
+import com.sook.backend.common.dto.ExceptionDto;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
