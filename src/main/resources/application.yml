@@ -6,7 +6,7 @@ spring:
       - classpath:application-oauth.yml
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
     properties:
