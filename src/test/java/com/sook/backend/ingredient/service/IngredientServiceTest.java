@@ -13,35 +13,39 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sook.backend.AbstractSoOkTest;
 import com.sook.backend.ingredient.dto.IngredientDto;
+import com.sook.backend.pill.model.IngredientUnit;
 
 @Transactional
 class IngredientServiceTest extends AbstractSoOkTest {
+
+    private static final List<Long> TEST_PILL_IDS = List.of(7L, 111L, 195L, 89L, 135L, 95L, 174L, 132L, 82L, 149L,
+            1671L, 51L, 896L);
 
     @Autowired
     private IngredientService ingredientService;
 
     @Test
     void 영양제_아이디로_총_성분_함량을_가져온다() {
-        Map<String, BigDecimal> ingredientSums = ingredientService.getIngredientsSumOf(List.of(95L, 92L));
+        Map<String, BigDecimal> ingredientSums = ingredientService.getIngredientsSumOf(TEST_PILL_IDS);
 
-        assertThat(ingredientSums.get("비타민B2")).isEqualByComparingTo(BigDecimal.valueOf(2.8));
+        assertThat(ingredientSums.get("비타민B1")).isEqualByComparingTo(BigDecimal.valueOf(17.08));
     }
 
     @Test
     void 영양제_아이디로_영양제_성분의_총량과_기준량을_가져온다() {
-        List<IngredientDto> ingredients = ingredientService.getIngredientsOf(List.of(95L, 92L));
+        List<IngredientDto> ingredients = ingredientService.getIngredientsOf(TEST_PILL_IDS);
 
         assertThat(ingredients).anySatisfy(ingredientDto -> {
-            assertThat(ingredientDto.name()).isEqualTo("비타민B2");
-            assertThat(ingredientDto.amount()).isEqualByComparingTo(BigDecimal.valueOf(2.8));
-            assertThat(ingredientDto.minimumAmount()).isEqualByComparingTo(BigDecimal.valueOf(0.42));
-            assertThat(ingredientDto.maximumAmount()).isEqualByComparingTo(BigDecimal.valueOf(40));
+            assertThat(ingredientDto.name()).isEqualTo("비타민B1");
+            assertThat(ingredientDto.amount()).isEqualByComparingTo(BigDecimal.valueOf(17.08));
+            assertThat(ingredientDto.maximumAmount()).isEqualByComparingTo(BigDecimal.valueOf(100.0));
+            assertThat(ingredientDto.minimumAmount()).isEqualByComparingTo(BigDecimal.valueOf(0.36));
         });
     }
 
     @Test
     void 기준량이_존재하는_영양제_성분만_표시한다() {
-        List<IngredientDto> ingredients = ingredientService.getIngredientsOf(List.of(95L, 92L));
+        List<IngredientDto> ingredients = ingredientService.getIngredientsOf(TEST_PILL_IDS);
 
         assertThat(ingredients).noneMatch(ingredientDto -> Objects.isNull(ingredientDto.maximumAmount()));
     }
