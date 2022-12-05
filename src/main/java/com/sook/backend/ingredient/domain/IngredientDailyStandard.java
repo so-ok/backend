@@ -1,4 +1,4 @@
-package com.sook.backend.pill.model;
+package com.sook.backend.ingredient.domain;
 
 import java.math.BigDecimal;
 
@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.sook.backend.common.model.BaseModel;
+import com.sook.backend.pill.model.Ingredient;
+import com.sook.backend.pill.model.IngredientUnit;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
