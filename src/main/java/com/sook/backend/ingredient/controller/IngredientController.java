@@ -24,7 +24,7 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @ApiOperation("영양제로 성분의 총량과 기준량을 가져온다")
-    @PostMapping("ingredients")
+    @PostMapping()
     public List<IngredientDto> getIngredients(@RequestBody IngredientRequestDto ingredientRequestDto) {
         return ingredientService.getIngredientsOf(ingredientRequestDto.pillIds());
     }

@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sook.backend.AbstractSoOkTest;
 import com.sook.backend.ingredient.dto.IngredientDto;
-import com.sook.backend.pill.model.IngredientUnit;
 
 @Transactional
 class IngredientServiceTest extends AbstractSoOkTest {
@@ -23,13 +21,6 @@ class IngredientServiceTest extends AbstractSoOkTest {
 
     @Autowired
     private IngredientService ingredientService;
-
-    @Test
-    void 영양제_아이디로_총_성분_함량을_가져온다() {
-        Map<String, BigDecimal> ingredientSums = ingredientService.getIngredientsSumOf(TEST_PILL_IDS);
-
-        assertThat(ingredientSums.get("비타민B1")).isEqualByComparingTo(BigDecimal.valueOf(17.08));
-    }
 
     @Test
     void 영양제_아이디로_영양제_성분의_총량과_기준량을_가져온다() {
