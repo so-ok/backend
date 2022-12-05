@@ -34,4 +34,5 @@ frontend:
   authorizedRedirectUris: >
     http://localhost:3000.*,
     https://.*sookfe.vercel.app.*,
-    https://so-ok.cf.*
+    https://so-ok.cf.*,
+    https://www.so-ok.cf.*
