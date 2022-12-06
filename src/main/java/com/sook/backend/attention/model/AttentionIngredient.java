@@ -5,7 +5,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.sook.backend.common.model.BaseModel;
-import com.sook.backend.pill.model.Ingredient;
+import com.sook.backend.ingredient.model.Ingredient;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

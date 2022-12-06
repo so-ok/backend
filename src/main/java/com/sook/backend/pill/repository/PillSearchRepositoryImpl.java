@@ -13,7 +13,7 @@ import com.sook.backend.common.repository.OrderByNull;
 import com.sook.backend.pill.dto.PillSearchDto;
 import com.sook.backend.pill.model.Pill;
 import com.sook.backend.pill.model.PillIngredient;
-import com.sook.backend.pill.model.QIngredient;
+import com.sook.backend.ingredient.model.QIngredient;
 import com.sook.backend.pill.model.QPill;
 import com.sook.backend.pill.model.QPillIngredient;
 
