@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.sook.backend.common.model.BaseModel;
+import com.sook.backend.ingredient.model.Ingredient;
+import com.sook.backend.ingredient.model.IngredientUnit;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

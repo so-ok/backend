@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.sook.backend.common.model.BaseModel;
-import com.sook.backend.pill.model.Ingredient;
+import com.sook.backend.ingredient.model.Ingredient;
 import com.sook.backend.pill.model.Pill;
 
 import lombok.AccessLevel;

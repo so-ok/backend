@@ -1,4 +1,4 @@
-package com.sook.backend.pill.model;
+package com.sook.backend.ingredient.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Index;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "pill_ingredients", indexes = {
-		@Index(name = "pill_ingredients_name_uindex", columnList = "name", unique = true)
+        @Index(name = "pill_ingredients_name_uindex", columnList = "name", unique = true)
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,19 +33,25 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Ingredient extends BaseModel {
 
-	@Column(unique = true)
-	private String name;
+    @Column(unique = true)
+    private String name;
 
-	@Enumerated(EnumType.STRING)
-	private IngredientUnit defaultUnit;
+    @Enumerated(EnumType.STRING)
+    private IngredientUnit defaultUnit;
 
-	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
-	@Builder.Default
-	private List<AttentionIngredient> attentionIngredients = new ArrayList<>();
+    @Lob
+    private String functionalContent;
 
-	public List<Attention> attentions() {
-		return attentionIngredients.stream()
-				.map(AttentionIngredient::attention)
-				.toList();
-	}
+    @Lob
+    private String precautions;
+
+    @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<AttentionIngredient> attentionIngredients = new ArrayList<>();
+
+    public List<Attention> attentions() {
+        return attentionIngredients.stream()
+                .map(AttentionIngredient::attention)
+                .toList();
+    }
 }

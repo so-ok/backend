@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.Projections;
-import com.sook.backend.ingredient.domain.QIngredientDailyStandard;
+import com.sook.backend.ingredient.model.QIngredientDailyStandard;
 import com.sook.backend.ingredient.dto.IngredientDto;
-import com.sook.backend.pill.model.QIngredient;
+import com.sook.backend.ingredient.model.QIngredient;
 import com.sook.backend.pill.model.QPillIngredient;
 
 @Repository

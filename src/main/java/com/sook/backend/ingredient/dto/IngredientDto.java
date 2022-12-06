@@ -2,7 +2,7 @@ package com.sook.backend.ingredient.dto;
 
 import java.math.BigDecimal;
 
-import com.sook.backend.pill.model.IngredientUnit;
+import com.sook.backend.ingredient.model.IngredientUnit;
 
 public record IngredientDto(
         String name,

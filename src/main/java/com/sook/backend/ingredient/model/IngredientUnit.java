@@ -1,4 +1,4 @@
-package com.sook.backend.pill.model;
+package com.sook.backend.ingredient.model;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
