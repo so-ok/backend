@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import com.sook.backend.pill.dto.PillSearchDto;
 import com.sook.backend.pill.model.Pill;
 
 @Transactional
-@Disabled
 class PillRepositoryTest extends AbstractSoOkTest {
 
     @Autowired
@@ -28,18 +26,18 @@ class PillRepositoryTest extends AbstractSoOkTest {
     @DisplayName("search() 테스트 - name")
     public void testSearchByName() throws Exception {
         //given
+        String searchName = "밀크씨슬";
+        int expectedSize = 13;
         PillSearchDto search = PillSearchDto.builder()
-                .name("비오틴")
+                .name(searchName)
                 .build();
 
         //when
         List<Pill> pills = pillRepository.search(search);
 
         //then
-        assertEquals(27, pills.size());
-        pills.forEach((pill -> {
-            assertTrue(pill.name().contains(search.name()));
-        }));
+        assertEquals(expectedSize, pills.size());
+        pills.forEach((pill -> assertTrue(pill.name().contains(search.name()))));
     }
 
     @Test
@@ -64,15 +62,15 @@ class PillRepositoryTest extends AbstractSoOkTest {
             }));
         }));
 
-        assertEquals(1141, pills.size());
+        assertEquals(30, pills.size());
     }
 
     @Test
     @DisplayName("search() 테스트 - attentions, ingredients")
     public void testSearchByAttentionAndIngredients() throws Exception {
         //given
-        List<String> attentions = List.of("눈 건강", "간 건강");
-        List<String> ingredients = List.of("비타민A");
+        List<String> attentions = List.of("장 건강", "간 건강");
+        List<String> ingredients = List.of("비타민B1");
 
         PillSearchDto search = PillSearchDto.builder()
                 .attentions(attentions)
@@ -98,15 +96,15 @@ class PillRepositoryTest extends AbstractSoOkTest {
             }));
         }));
 
-        assertEquals(195, pills.size());
+        assertEquals(10, pills.size());
     }
 
     @Test
     @DisplayName("search() with Paging 테스트 - attentions, ingredients")
     public void testSearchByAttentionAndIngredientsPageable() throws Exception {
         //given
-        List<String> attentions = List.of("눈 건강", "간 건강");
-        List<String> ingredients = List.of("비타민A");
+        List<String> attentions = List.of("장 건강", "간 건강");
+        List<String> ingredients = List.of("비타민B1");
 
         PillSearchDto search = PillSearchDto.builder()
                 .attentions(attentions)
@@ -132,6 +130,6 @@ class PillRepositoryTest extends AbstractSoOkTest {
             }));
         }));
 
-        assertEquals(195, pills.getTotalElements());
+        assertEquals(10, pills.getTotalElements());
     }
 }
