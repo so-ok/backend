@@ -368,7 +368,7 @@ values (40, '2022-11-06 01:44:59', '2022-11-06 01:44:59', 2000000000.0000000000,
        (3552, '2022-11-06 01:45:11', '2022-11-06 01:45:11', 35.0000000000, 'MILLI_GRAM', 120, 318),
        (3553, '2022-11-06 01:45:11', '2022-11-06 01:45:11', 240.0000000000, 'MILLI_GRAM', 49, 318),
        (3597, '2022-11-06 01:45:11', '2022-11-06 01:45:11', 43.7500000000, 'MILLI_GRAM', 120, 421);
-insert into pill_ingredients (id, created_at, updated_at, default_unit, name)
+insert into ingredients (id, created_at, updated_at, default_unit, name)
 values (6, '2022-11-06 01:44:42', '2022-11-06 01:44:42', 'MILLI_GRAM', '4-Hydroxy-L-isoleuscine'),
        (17, '2022-11-06 01:44:42', '2022-11-06 01:44:42', 'MILLI_GRAM', 'D-pinitol'),
        (27, '2022-11-06 01:44:42', '2022-11-06 01:44:42', 'MILLI_GRAM', 'Glabridin'),

@@ -3,6 +3,7 @@ package com.sook.backend.pill.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
@@ -38,7 +39,7 @@ public class Pill extends BaseModel {
     @Builder.Default
     private List<AttentionPill> attentionPills = new ArrayList<>();
 
-    @Lob
+    @Column(columnDefinition = "text")
     private String image;
 
     private Integer price;
