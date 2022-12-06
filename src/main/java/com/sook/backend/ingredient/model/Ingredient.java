@@ -9,7 +9,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Index;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,8 +23,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "pill_ingredients", indexes = {
-        @Index(name = "pill_ingredients_name_uindex", columnList = "name", unique = true)
+@Table(name = "ingredients", indexes = {
+        @Index(name = "i__name__uindex", columnList = "name", unique = true)
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,10 +38,10 @@ public class Ingredient extends BaseModel {
     @Enumerated(EnumType.STRING)
     private IngredientUnit defaultUnit;
 
-    @Lob
+    @Column(columnDefinition = "text")
     private String functionalContent;
 
-    @Lob
+    @Column(columnDefinition = "text")
     private String precautions;
 
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
