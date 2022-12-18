@@ -9,60 +9,65 @@ import com.sook.backend.pill.model.PillIngredient;
 import lombok.Builder;
 
 public record PillDto(
-		Long id,
-		String name,
-		List<PillIngredientDto> ingredients,
-		List<AttentionPillDto> attentions
+        Long id,
+        String name,
+
+        String image,
+        Integer price,
+        List<PillIngredientDto> ingredients,
+        List<AttentionPillDto> attentions
 ) {
-	@Builder
-	public PillDto {
-	}
+    @Builder
+    public PillDto {
+    }
 
-	public static PillDto of(Pill entity) {
-		var ingredients = entity.pillIngredients().stream()
-				.map((PillIngredientDto::of))
-				.toList();
-		var attentions = entity.attentions().stream()
-				.map((AttentionPillDto::of))
-				.toList();
+    public static PillDto of(Pill entity) {
+        var ingredients = entity.pillIngredients().stream()
+                .map((PillIngredientDto::of))
+                .toList();
+        var attentions = entity.attentions().stream()
+                .map((AttentionPillDto::of))
+                .toList();
 
-		return PillDto.builder()
-				.id(entity.id())
-				.name(entity.name())
-				.ingredients(ingredients)
-				.attentions(attentions)
-				.build();
-	}
+        return PillDto.builder()
+                .id(entity.id())
+                .name(entity.name())
+                .image(entity.image())
+                .price(entity.price())
+                .ingredients(ingredients)
+                .attentions(attentions)
+                .build();
+    }
 
-	public record AttentionPillDto(
-			String name
-	) {
-		@Builder
-		public AttentionPillDto {
-		}
+    public record AttentionPillDto(
+            String name
+    ) {
+        @Builder
+        public AttentionPillDto {
+        }
 
-		public static AttentionPillDto of(Attention entity) {
-			return AttentionPillDto.builder()
-					.name(entity.name())
-					.build();
-		}
-	}
+        public static AttentionPillDto of(Attention entity) {
+            return AttentionPillDto.builder()
+                    .name(entity.name())
+                    .build();
+        }
+    }
 
-	public record PillIngredientDto(
-			String name,
-			String amount,
-			String unit
-	) {
-		@Builder
-		public PillIngredientDto {
-		}
+    public record PillIngredientDto(
+            String name,
+            String amount,
+            String unit
+    ) {
+        @Builder
+        public PillIngredientDto {
+        }
 
-		public static PillIngredientDto of(PillIngredient entity) {
-			return PillIngredientDto.builder()
-					.name(entity.ingredient().name())
-					.amount(entity.amount().toString())
-					.unit(entity.unit().unit())
-					.build();
-		}
-	}
+        public static PillIngredientDto of(PillIngredient entity) {
+            return PillIngredientDto.builder()
+                    .name(entity.ingredient().name())
+                    .amount(entity.amount().toString())
+                    .unit(entity.unit().unit())
+                    .build();
+        }
+    }
 }
