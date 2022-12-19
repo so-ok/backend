@@ -1,5 +1,7 @@
 package com.sook.backend.pill.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -24,21 +26,29 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/pill")
 @Api(tags = "💊 영양제")
 public class PillController {
-	private final PillService pillService;
+    private final PillService pillService;
 
-	@NoApiAuth
-	@ApiOperation("id로 가져오기")
-	@GetMapping("/{id}")
-	public ResponseEntity<PillDto> getPill(@PathVariable("id") Long id) {
-		PillDto pill = pillService.findById(id);
-		return ResponseEntity.ok(pill);
-	}
+    @NoApiAuth
+    @ApiOperation("id로 가져오기")
+    @GetMapping("/{id}")
+    public ResponseEntity<PillDto> getPill(@PathVariable("id") Long id) {
+        PillDto pill = pillService.findById(id);
+        return ResponseEntity.ok(pill);
+    }
 
-	@NoApiAuth
-	@ApiOperation("영양제 검색")
-	@PostMapping("/search")
-	public ResponseEntity<Page<PillDto>> search(@RequestBody PillSearchDto searchDto, Pageable pageable) {
-		Page<PillDto> pillDtos = pillService.search(searchDto, pageable);
-		return ResponseEntity.ok(pillDtos);
-	}
+    @NoApiAuth
+    @ApiOperation("id 리스트로 가져오기")
+    @PostMapping
+    public ResponseEntity<List<PillDto>> getPill(List<Long> ids) {
+        List<PillDto> pills = pillService.findByIds(ids);
+        return ResponseEntity.ok(pills);
+    }
+
+    @NoApiAuth
+    @ApiOperation("영양제 검색")
+    @PostMapping("/search")
+    public ResponseEntity<Page<PillDto>> search(@RequestBody PillSearchDto searchDto, Pageable pageable) {
+        Page<PillDto> pillDtos = pillService.search(searchDto, pageable);
+        return ResponseEntity.ok(pillDtos);
+    }
 }
