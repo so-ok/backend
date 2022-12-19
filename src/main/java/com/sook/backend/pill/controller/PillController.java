@@ -39,7 +39,7 @@ public class PillController {
     @NoApiAuth
     @ApiOperation("id 리스트로 가져오기")
     @PostMapping
-    public ResponseEntity<List<PillDto>> getPill(List<Long> ids) {
+    public ResponseEntity<List<PillDto>> getPill(@RequestBody List<Long> ids) {
         List<PillDto> pills = pillService.findByIds(ids);
         return ResponseEntity.ok(pills);
     }
