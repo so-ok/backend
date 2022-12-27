@@ -49,7 +49,7 @@ public class JwtService {
     }
 
     public boolean isValid(String accessToken) {
-        return accessKey.validate(accessToken);
+        return accessKey.isValid(accessToken);
     }
 
     public TokenDto.AccessToken renewWith(String refreshToken) {
