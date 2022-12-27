@@ -34,7 +34,6 @@ class AccessKeyTest {
     @Test
     @DisplayName("토큰에서 Claims를 가져온다")
     void parse() {
-
         assertThat(accessKey.parse(accessToken).getSubject()).isEqualTo(SUBJECT);
     }
 
