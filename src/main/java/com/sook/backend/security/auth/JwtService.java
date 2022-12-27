@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.sook.backend.security.auth.dto.AuthDto;
 import com.sook.backend.security.auth.dto.TokenDto;
-import com.sook.backend.security.auth.key.Key;
+import com.sook.backend.security.auth.key.Secret;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,29 +26,29 @@ public class JwtService {
     private static final String AUTHORITY_SEPARATOR = ",";
     private static final String AUTHORITY_KEY = "authorities";
 
-    private final Key accessKey;
-    private final Key refreshKey;
+    private final Secret accessSecret;
+    private final Secret refreshSecret;
 
     public String generateAccessToken(OAuth2User oAuth2User) {
         Claims claims = buildClaimsFrom(oAuth2User);
-        return accessKey.issueTokenWith(claims);
+        return accessSecret.issueTokenWith(claims);
     }
 
     public String generateRefreshToken(OAuth2User oAuth2User) {
         Claims claims = buildClaimsFrom(oAuth2User);
-        return refreshKey.issueTokenWith(claims);
+        return refreshSecret.issueTokenWith(claims);
     }
 
     public Authentication getAuthentication(String accessToken) {
-        Claims claims = accessKey.parse(accessToken);
+        Claims claims = accessSecret.parse(accessToken);
         String email = claims.getSubject();
         String joinedAuthorities = claims.get(AUTHORITY_KEY, String.class);
         return new UsernamePasswordAuthenticationToken(new AuthDto(email), "", parseAuthorities(joinedAuthorities));
     }
 
     public TokenDto.AccessTokenDto renewWith(String refreshToken) {
-        Claims claims = refreshKey.parse(refreshToken);
-        String accessToken = accessKey.issueTokenWith(claims);
+        Claims claims = refreshSecret.parse(refreshToken);
+        String accessToken = accessSecret.issueTokenWith(claims);
         return new TokenDto.AccessTokenDto(accessToken);
     }
 

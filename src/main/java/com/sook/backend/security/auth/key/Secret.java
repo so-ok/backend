@@ -15,11 +15,11 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class Key {
+public abstract class Secret {
     private final Long duration;
     private final String secret;
 
-    public Key(String secret, Long duration) {
+    public Secret(String secret, Long duration) {
         this.secret = secret;
         this.duration = duration;
     }

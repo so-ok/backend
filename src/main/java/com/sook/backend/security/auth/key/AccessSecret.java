@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("refreshKey")
-public class RefreshKey extends Key {
+@Qualifier("accessSecret")
+public class AccessSecret extends Secret {
 
-    public RefreshKey(@Value("${app.auth.refreshTokenSecret}") String secret,
-            @Value("${app.auth.refreshTokenExpiry}") Long duration) {
+    public AccessSecret(@Value("${app.auth.accessTokenSecret}") String secret,
+            @Value("${app.auth.accessTokenExpiry}") Long duration) {
         super(secret, duration);
     }
 }

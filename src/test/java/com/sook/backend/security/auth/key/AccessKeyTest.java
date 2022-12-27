@@ -20,13 +20,13 @@ class AccessKeyTest {
     private static final String HS512_PREFIX = "eyJhbGciOiJIUzUxMiJ9";
     private static final String SUBJECT = "testsubject";
 
-    private AccessKey accessKey;
+    private AccessSecret accessSecret;
     private String accessToken;
 
     @BeforeEach
     void setUp() {
-        accessKey = new AccessKey(SECRET, DURATION);
-        accessToken = accessKey.issueTokenWith(buildClaims(SUBJECT));
+        accessSecret = new AccessSecret(SECRET, DURATION);
+        accessToken = accessSecret.issueTokenWith(buildClaims(SUBJECT));
     }
 
     @Test
@@ -38,19 +38,19 @@ class AccessKeyTest {
     @Test
     @DisplayName("토큰에서 Claims를 가져온다")
     void parse() {
-        assertThat(accessKey.parse(accessToken).getSubject()).isEqualTo(SUBJECT);
+        assertThat(accessSecret.parse(accessToken).getSubject()).isEqualTo(SUBJECT);
     }
 
     @Test
     @DisplayName("정상 토큰은 예외를 던지지 않는다")
     void validate() {
-        assertThatNoException().isThrownBy(() -> accessKey.parse(accessToken));
+        assertThatNoException().isThrownBy(() -> accessSecret.parse(accessToken));
     }
 
     @Test
     @DisplayName("비정상 토큰은 예외를 던진다")
     void validate_thrown() {
-        assertThatExceptionOfType(InvalidTokenException.class).isThrownBy(() -> accessKey.parse("INVALID"));
+        assertThatExceptionOfType(InvalidTokenException.class).isThrownBy(() -> accessSecret.parse("INVALID"));
     }
 
     private Claims buildClaims(String subject) {
