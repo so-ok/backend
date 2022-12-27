@@ -42,7 +42,7 @@ class AccessKeyTest {
     @DisplayName("토큰이 유효한지 판별한다")
     void validate() {
         assertThat(accessToken)
-                .satisfies(token -> assertThat(accessKey.isValid(token)).isTrue());
+                .satisfies(token -> assertThat(accessKey.checkValidityOf(token)).isTrue());
     }
 
     private Claims buildClaims(String subject) {

@@ -34,7 +34,7 @@ public abstract class Key {
                 .getBody();
     }
 
-    public boolean isValid(String token) {
+    public boolean checkValidityOf(String token) {
         try {
             parse(token);
             return true;
