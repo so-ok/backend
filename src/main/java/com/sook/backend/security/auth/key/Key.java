@@ -1,20 +1,23 @@
 package com.sook.backend.security.auth.key;
 
+import static io.jsonwebtoken.SignatureAlgorithm.HS512;
+
+import java.util.Base64;
 import java.util.Date;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class Key {
-
     private final Long duration;
-    private final Secret secret;
+    private final String secret;
 
-    public Key(Secret secret, Long duration) {
+    public Key(String secret, Long duration) {
         this.secret = secret;
         this.duration = duration;
     }
@@ -23,13 +26,13 @@ public abstract class Key {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now())
-                .setExpiration(getExpirationDate())
-                .signWith(secret.asKey(), SignatureAlgorithm.HS512)
+                .setExpiration(expirationDate())
+                .signWith(key(), HS512)
                 .compact();
     }
 
     public Claims parse(String token) {
-        return secret.parser()
+        return parser()
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -39,12 +42,26 @@ public abstract class Key {
             parse(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            log.warn(e.getMessage());
             return false;
         }
     }
 
-    private Date getExpirationDate() {
+    private java.security.Key key() {
+        return Keys.hmacShaKeyFor(encode(secret));
+    }
+
+    private JwtParser parser() {
+        return Jwts.parserBuilder()
+                .setSigningKey(key())
+                .build();
+    }
+
+    private byte[] encode(String secret) {
+        return Base64.getEncoder()
+                .encode(secret.getBytes());
+    }
+
+    private Date expirationDate() {
         return new Date(now().getTime() + duration);
     }
 

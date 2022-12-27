@@ -15,7 +15,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sook.backend.security.auth.exception.InvalidTokenException;
-import com.sook.backend.security.auth.key.Token;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,11 +41,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private Token parseTokenFrom(HttpServletRequest request) {
+    private String parseTokenFrom(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(HEADER_PREFIX)) {
-            return new Token(authorizationHeader.replace(HEADER_PREFIX, EMPTY));
+            return authorizationHeader.replace(HEADER_PREFIX, EMPTY);
         }
-        return new Token(null);
+        return null;
     }
 }

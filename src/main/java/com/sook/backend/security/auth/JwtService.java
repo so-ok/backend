@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import com.sook.backend.security.auth.dto.AuthDto;
 import com.sook.backend.security.auth.dto.TokenDto;
 import com.sook.backend.security.auth.key.Key;
-import com.sook.backend.security.auth.key.Token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -40,17 +39,16 @@ public class JwtService {
         return refreshKey.issueTokenWith(claims);
     }
 
-    public Authentication getAuthentication(Token accessToken) {
-        accessToken = accessToken.withKey(accessKey);
-        Claims claims = accessToken.claims();
+    public Authentication getAuthentication(String accessToken) {
+        Claims claims = accessKey.parse(accessToken);
         String email = claims.getSubject();
         String joinedAuthorities = claims.get(AUTHORITY_KEY, String.class);
         return new UsernamePasswordAuthenticationToken(new AuthDto(email), "", parseAuthorities(joinedAuthorities));
     }
 
-    public TokenDto.AccessTokenDto renewWith(Token refreshToken) {
-        refreshToken = refreshToken.withKey(refreshKey);
-        String accessToken = accessKey.issueTokenWith(refreshToken.claims());
+    public TokenDto.AccessTokenDto renewWith(String refreshToken) {
+        Claims claims = refreshKey.parse(refreshToken);
+        String accessToken = accessKey.issueTokenWith(claims);
         return new TokenDto.AccessTokenDto(accessToken);
     }
 

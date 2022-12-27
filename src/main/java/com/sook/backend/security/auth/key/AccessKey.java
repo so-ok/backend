@@ -10,6 +10,6 @@ public class AccessKey extends Key {
 
     public AccessKey(@Value("${app.auth.accessTokenSecret}") String secret,
             @Value("${app.auth.accessTokenExpiry}") Long duration) {
-        super(new Secret(secret), duration);
+        super(secret, duration);
     }
 }

@@ -10,6 +10,6 @@ public class RefreshKey extends Key {
 
     public RefreshKey(@Value("${app.auth.refreshTokenSecret}") String secret,
             @Value("${app.auth.refreshTokenExpiry}") Long duration) {
-        super(new Secret(secret), duration);
+        super(secret, duration);
     }
 }
