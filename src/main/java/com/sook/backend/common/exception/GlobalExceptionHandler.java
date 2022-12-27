@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ExceptionDto> handleException(final Exception exception) {
-        log.error("INTERNAL_SERVER_ERROR", exception);
+        log.error("INTERNAL_SERVER_ERROR: {}", exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionDto.of(exception));
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     protected ResponseEntity<ExceptionDto> handleApiException(final ApiException exception) {
-        log.error("API_EXCEPTION", exception);
+        log.error("API_EXCEPTION: {}", exception.getMessage());
         return ResponseEntity
                 .status(exception.getStatus())
                 .body(ExceptionDto.of(exception));
