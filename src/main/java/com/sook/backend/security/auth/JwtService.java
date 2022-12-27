@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.sook.backend.security.auth.dto.AuthDto;
 import com.sook.backend.security.auth.dto.TokenDto;
-import com.sook.backend.security.auth.key.JwtKey;
+import com.sook.backend.security.auth.key.Key;
 import com.sook.backend.user.dto.UserDto;
 import com.sook.backend.user.service.UserService;
 
@@ -23,17 +23,17 @@ import lombok.RequiredArgsConstructor;
 public class JwtService {
 
     private final UserService userService;
-    private final JwtKey accessKey;
-    private final JwtKey refreshKey;
+    private final Key accessKey;
+    private final Key refreshKey;
 
     public String generateAccessToken(OAuth2User oAuth2User) {
-        Claims claims = buildClaims(oAuth2User);
-        return accessKey.generateTokenWith(claims);
+        Claims claims = buildClaimsFrom(oAuth2User);
+        return accessKey.issueTokenWith(claims);
     }
 
     public String generateRefreshToken(OAuth2User oAuth2User) {
-        Claims claims = buildClaims(oAuth2User);
-        return refreshKey.generateTokenWith(claims);
+        Claims claims = buildClaimsFrom(oAuth2User);
+        return refreshKey.issueTokenWith(claims);
     }
 
     public Authentication getAuthentication(String accessToken) {
@@ -48,18 +48,18 @@ public class JwtService {
         return new UsernamePasswordAuthenticationToken(authDto, "", authorities);
     }
 
-    public boolean validateToken(String accessToken) {
+    public boolean isValid(String accessToken) {
         return accessKey.validate(accessToken);
     }
 
-    public TokenDto.AccessToken renew(String refreshToken) {
+    public TokenDto.AccessToken renewWith(String refreshToken) {
         Claims claims = refreshKey.parse(refreshToken);
 
-        String accessToken = accessKey.generateTokenWith(claims);
+        String accessToken = accessKey.issueTokenWith(claims);
         return new TokenDto.AccessToken(accessToken);
     }
 
-    private Claims buildClaims(OAuth2User oAuth2User) {
+    private Claims buildClaimsFrom(OAuth2User oAuth2User) {
         String email = oAuth2User.getName();
         Claims claims = Jwts.claims();
         claims.setSubject(email);

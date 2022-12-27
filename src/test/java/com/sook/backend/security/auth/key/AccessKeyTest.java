@@ -1,7 +1,8 @@
 package com.sook.backend.security.auth.key;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,41 +11,43 @@ import io.jsonwebtoken.Jwts;
 
 class AccessKeyTest {
 
-	private static final String ACCESS_TOKEN_SECRET = "testaccesssecrettestaccesssecrettestaccesssecrettestaccesssecret";
-	private static final Long ACCESS_TOKEN_EXPIRY = 86400000L;
-	private static final String JWT_PREFIX_HS512 = "eyJhbGciOiJIUzUxMiJ9";
+    private static final String SECRET = "testaccesssecrettestaccesssecrettestaccesssecrettestaccesssecret";
+    private static final Long DURATION = 86400000L;
+    private static final String HS512_PREFIX = "eyJhbGciOiJIUzUxMiJ9";
+    private static final String SUBJECT = "testsubject";
 
-	private static final JwtKey ACCESS_KEY = new AccessKey(ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRY);
+    private AccessKey accessKey;
+    private String accessToken;
 
-	@Test
-	@DisplayName("Claims로 토큰을 발급한다")
-	void generate_token_with_claims() {
-		String subject = "testsubject";
+    @BeforeEach
+    void setUp() {
+        accessKey = new AccessKey(SECRET, DURATION);
+        accessToken = accessKey.issueTokenWith(buildClaims(SUBJECT));
+    }
 
-		assertThat(ACCESS_KEY.generateTokenWith(buildClaims(subject))).contains(JWT_PREFIX_HS512);
-	}
+    @Test
+    @DisplayName("Claims로 토큰을 발급한다")
+    void generate_token_with_claims() {
+        assertThat(accessToken).startsWith(HS512_PREFIX);
+    }
 
-	@Test
-	@DisplayName("토큰에서 Claims를 가져온다")
-	void parse() {
-		String subject = "testsubject";
-		String token = ACCESS_KEY.generateTokenWith(buildClaims(subject));
+    @Test
+    @DisplayName("토큰에서 Claims를 가져온다")
+    void parse() {
 
-		assertThat(ACCESS_KEY.parse(token).getSubject()).isEqualTo(subject);
-	}
+        assertThat(accessKey.parse(accessToken).getSubject()).isEqualTo(SUBJECT);
+    }
 
-	@Test
-	@DisplayName("토큰이 유효한지 판별한다")
-	void validate() {
-		String subject = "testsubject";
+    @Test
+    @DisplayName("토큰이 유효한지 판별한다")
+    void validate() {
+        assertThat(accessToken)
+                .satisfies(token -> assertThat(accessKey.validate(token)).isTrue());
+    }
 
-		assertThat(ACCESS_KEY.generateTokenWith(buildClaims(subject)))
-			.satisfies(token -> assertThat(ACCESS_KEY.validate(token)).isTrue());
-	}
-
-	private Claims buildClaims(String subject) {
-		Claims claims = Jwts.claims();
-		claims.setSubject(subject);
-		return claims;
-	}
+    private Claims buildClaims(String subject) {
+        Claims claims = Jwts.claims();
+        claims.setSubject(subject);
+        return claims;
+    }
 }

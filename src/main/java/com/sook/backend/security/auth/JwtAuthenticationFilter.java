@@ -20,27 +20,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private static final String HEADER_PREFIX = "Bearer ";
+    private static final String HEADER_PREFIX = "Bearer ";
 
-	private final JwtService jwtService;
+    private final JwtService jwtService;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-		FilterChain filterChain) throws ServletException, IOException {
-		String accessToken = parseTokenFrom(request);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
+        String accessToken = parseTokenFrom(request);
 
-		if (StringUtils.hasText(accessToken) && jwtService.validateToken(accessToken)) {
-			Authentication authentication = jwtService.getAuthentication(accessToken);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		}
+        if (StringUtils.hasText(accessToken) && jwtService.isValid(accessToken)) {
+            Authentication authentication = jwtService.getAuthentication(accessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
 
-		filterChain.doFilter(request, response);
-	}
+        filterChain.doFilter(request, response);
+    }
 
-	private String parseTokenFrom(HttpServletRequest request) {
-		String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-		if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(HEADER_PREFIX))
-			return authorizationHeader.replace(HEADER_PREFIX, "");
-		return null;
-	}
+    private String parseTokenFrom(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(HEADER_PREFIX))
+            return authorizationHeader.replace(HEADER_PREFIX, "");
+        return null;
+    }
 }

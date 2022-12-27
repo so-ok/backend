@@ -1,71 +1,15 @@
 package com.sook.backend.security.auth.key;
 
-import java.security.Key;
-import java.util.Base64;
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
-
 @Component
 @Qualifier("accessKey")
-@Slf4j
-public class AccessKey implements JwtKey {
+public class AccessKey extends Key {
 
-
-	private final Long accessTokenDuration;
-	private final Key key;
-	private final JwtParser parser;
-
-	public AccessKey(@Value("${app.auth.accessTokenSecret}") String accessTokenSecret,
-		@Value("${app.auth.accessTokenExpiry}") Long accessTokenDuration) {
-		this.key = createKey(accessTokenSecret);
-		this.parser = Jwts.parserBuilder()
-			.setSigningKey(key)
-			.build();
-		this.accessTokenDuration = accessTokenDuration;
-	}
-
-	Key createKey(String secret) {
-		byte[] secretBytes = Base64.getEncoder()
-			.encode(secret.getBytes());
-		return Keys.hmacShaKeyFor(secretBytes);
-	}
-
-	@Override
-	public String generateTokenWith(Claims claims) {
-		Date now = new Date();
-		return Jwts.builder()
-			.setClaims(claims)
-			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + accessTokenDuration))
-			.signWith(key, SignatureAlgorithm.HS512)
-			.compact();
-	}
-
-	@Override
-	public Claims parse(String token) {
-		return parser.parseClaimsJws(token)
-			.getBody();
-	}
-
-	@Override
-	public boolean validate(String token) {
-		try {
-			parse(token);
-			return true;
-		} catch (JwtException | IllegalArgumentException e) {
-			log.warn(e.getMessage());
-			return false;
-		}
-	}
+    public AccessKey(@Value("${app.auth.accessTokenSecret}") String secret,
+            @Value("${app.auth.accessTokenExpiry}") Long duration) {
+        super(new Secret(secret), duration);
+    }
 }
