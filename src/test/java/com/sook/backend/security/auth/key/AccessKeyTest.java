@@ -1,10 +1,14 @@
 package com.sook.backend.security.auth.key;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import com.sook.backend.security.auth.exception.InvalidTokenException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -38,10 +42,15 @@ class AccessKeyTest {
     }
 
     @Test
-    @DisplayName("토큰이 유효한지 판별한다")
+    @DisplayName("정상 토큰은 예외를 던지지 않는다")
     void validate() {
-        assertThat(accessToken)
-                .satisfies(token -> assertThat(accessKey.checkValidityOf(token)).isTrue());
+        assertThatNoException().isThrownBy(() -> accessKey.parse(accessToken));
+    }
+
+    @Test
+    @DisplayName("비정상 토큰은 예외를 던진다")
+    void validate_thrown() {
+        assertThatExceptionOfType(InvalidTokenException.class).isThrownBy(() -> accessKey.parse("INVALID"));
     }
 
     private Claims buildClaims(String subject) {

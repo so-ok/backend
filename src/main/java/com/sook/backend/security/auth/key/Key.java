@@ -5,6 +5,8 @@ import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 import java.util.Base64;
 import java.util.Date;
 
+import com.sook.backend.security.auth.exception.InvalidTokenException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
@@ -32,17 +34,17 @@ public abstract class Key {
     }
 
     public Claims parse(String token) {
+        validateToken(token);
         return parser()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    public boolean checkValidityOf(String token) {
+    private void validateToken(String token) {
         try {
-            parse(token);
-            return true;
+            parser().parseClaimsJws(token);
         } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            throw new InvalidTokenException();
         }
     }
 
