@@ -15,16 +15,16 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class Secret {
+public abstract class TokenProvider {
     private final Long duration;
     private final String secret;
 
-    public Secret(String secret, Long duration) {
+    public TokenProvider(String secret, Long duration) {
         this.secret = secret;
         this.duration = duration;
     }
 
-    public String issueTokenWith(Claims claims) {
+    public String issueWith(Claims claims) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now())
