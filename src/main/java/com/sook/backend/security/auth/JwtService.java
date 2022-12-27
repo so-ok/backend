@@ -30,13 +30,11 @@ public class JwtService {
     private final Secret refreshSecret;
 
     public String generateAccessToken(OAuth2User oAuth2User) {
-        Claims claims = buildClaimsFrom(oAuth2User);
-        return accessSecret.issueTokenWith(claims);
+        return accessSecret.issueTokenWith(buildClaimsFrom(oAuth2User));
     }
 
     public String generateRefreshToken(OAuth2User oAuth2User) {
-        Claims claims = buildClaimsFrom(oAuth2User);
-        return refreshSecret.issueTokenWith(claims);
+        return refreshSecret.issueTokenWith(buildClaimsFrom(oAuth2User));
     }
 
     public Authentication getAuthentication(String accessToken) {
