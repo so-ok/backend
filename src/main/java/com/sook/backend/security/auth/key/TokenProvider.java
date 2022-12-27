@@ -2,6 +2,7 @@ package com.sook.backend.security.auth.key;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 
+import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
@@ -48,7 +49,7 @@ public abstract class TokenProvider {
         }
     }
 
-    private java.security.Key key() {
+    private Key key() {
         return Keys.hmacShaKeyFor(encode(secret));
     }
 
