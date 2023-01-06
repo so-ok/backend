@@ -18,10 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class TokenProvider {
     private final Long duration;
-    private final String secret;
+    private final Key key;
+    private final JwtParser parser;
 
     public TokenProvider(String secret, Long duration) {
-        this.secret = secret;
+        this.key = Keys.hmacShaKeyFor(encode(secret));
+        this.parser = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build();
         this.duration = duration;
     }
 
@@ -30,33 +34,23 @@ public abstract class TokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now())
                 .setExpiration(expirationDate())
-                .signWith(key(), HS512)
+                .signWith(key, HS512)
                 .compact();
     }
 
     public Claims parse(String token) {
         validateToken(token);
-        return parser()
+        return parser
                 .parseClaimsJws(token)
                 .getBody();
     }
 
     private void validateToken(String token) {
         try {
-            parser().parseClaimsJws(token);
+            parser.parseClaimsJws(token);
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidTokenException();
         }
-    }
-
-    private Key key() {
-        return Keys.hmacShaKeyFor(encode(secret));
-    }
-
-    private JwtParser parser() {
-        return Jwts.parserBuilder()
-                .setSigningKey(key())
-                .build();
     }
 
     private byte[] encode(String secret) {
