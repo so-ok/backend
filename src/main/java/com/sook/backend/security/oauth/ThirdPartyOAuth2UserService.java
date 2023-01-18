@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sook.backend.security.login.PrincipalDetails;
 import com.sook.backend.security.oauth.attribute.OAuth2UserAttribute;
 import com.sook.backend.security.oauth.attribute.OAuth2UserAttributeFactory;
 import com.sook.backend.user.model.User;
@@ -37,7 +38,7 @@ public class ThirdPartyOAuth2UserService implements OAuth2UserService<OAuth2User
                 userNameAttributeName);
 
         User savedUser = saveUser(attributes);
-        return new SookOAuth2User(savedUser.getAuthorities(), attributes);
+        return new PrincipalDetails(savedUser, attributes.getAttributes());
     }
 
     private User saveUser(OAuth2UserAttribute attributes) {
@@ -47,7 +48,6 @@ public class ThirdPartyOAuth2UserService implements OAuth2UserService<OAuth2User
             user.updateImage(attributes.profileImage());
             return user;
         }
-
         return userRepository.save(attributes.toEntity());
     }
 }
