@@ -1,4 +1,4 @@
-package com.sook.backend.security.auth;
+package com.sook.backend.security.auth.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

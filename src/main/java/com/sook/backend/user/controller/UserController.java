@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sook.backend.common.annotations.NoApiAuth;
-import com.sook.backend.security.auth.Auth;
-import com.sook.backend.security.auth.dto.AuthDto;
+import com.sook.backend.security.auth.annotation.Auth;
+import com.sook.backend.security.auth.annotation.AuthorizedAdmin;
+import com.sook.backend.security.auth.annotation.AuthorizedUser;
 import com.sook.backend.user.dto.UserDto;
 import com.sook.backend.user.service.UserService;
 
@@ -25,15 +25,22 @@ public class UserController {
     private final UserService userService;
 
     @ApiOperation("자신의 정보 가져오기")
-    @GetMapping()
-    public ResponseEntity<UserDto> getUser(@Auth AuthDto authDto) {
-        return getUser(authDto.email());
+    @GetMapping
+    @AuthorizedUser
+    public ResponseEntity<UserDto> getUser(@Auth String username) {
+        return getUserByEmail(username);
     }
 
-    @NoApiAuth
+    @ApiOperation("자신의 정보 가져오기(관리자)")
+    @GetMapping("admin/{email}")
+    @AuthorizedAdmin
+    public ResponseEntity<UserDto> getUserWithAdminRole(@PathVariable String email) {
+        return getUserByEmail(email);
+    }
+
     @ApiOperation("다른 사람 정보 가져오기")
     @GetMapping("/{email}")
-    public ResponseEntity<UserDto> getUser(@PathVariable String email) {
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
         UserDto userDto = userService.findBy(email);
         return ResponseEntity.ok(userDto);
     }
