@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.sook.backend.common.annotations.NoApiAuth;
-import com.sook.backend.security.auth.dto.AuthDto;
+import com.sook.backend.security.auth.annotation.Auth;
+import com.sook.backend.security.auth.annotation.Authorized;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.AuthorizationScopeBuilder;
@@ -52,7 +52,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public Docket docket() {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
-                .ignoredParameterTypes(AuthDto.class)
+                .ignoredParameterTypes(Auth.class)
                 .securityContexts(List.of(securityContext()))
                 .securitySchemes(List.of(securityScheme()))
                 .select()
@@ -91,7 +91,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     private boolean needsAuth(OperationContext operationContext) {
-        return operationContext.findAnnotation(NoApiAuth.class).isEmpty();
+        return operationContext.findAnnotation(Authorized.class).isPresent();
     }
 
     private List<SecurityReference> securityReferences() {
