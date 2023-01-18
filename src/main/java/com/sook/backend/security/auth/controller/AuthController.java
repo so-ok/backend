@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sook.backend.common.annotations.NoApiAuth;
 import com.sook.backend.security.auth.JwtService;
 import com.sook.backend.security.auth.dto.TokenDto;
 
@@ -21,7 +20,6 @@ public class AuthController {
 
     private final JwtService jwtService;
 
-    @NoApiAuth
     @ApiOperation(value = "토큰 갱신", notes = "Refresh Token 필요")
     @PostMapping(path = "renew")
     public TokenDto.AccessTokenDto renewToken(@RequestBody TokenDto.RefreshTokenDto refreshTokenDto) {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sook.backend.ingredient.dto.IngredientDto;
 import com.sook.backend.ingredient.service.IngredientService;
+import com.sook.backend.security.auth.annotation.AuthorizedUser;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,8 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @ApiOperation("영양제로 성분의 총량과 기준량을 가져온다")
-    @PostMapping()
+    @PostMapping
+    @AuthorizedUser
     public List<IngredientDto> getIngredients(@RequestBody List<Long> pillIds) {
         return ingredientService.getIngredientsOf(pillIds);
     }
