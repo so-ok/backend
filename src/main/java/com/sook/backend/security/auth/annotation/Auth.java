@@ -1,4 +1,4 @@
-package com.sook.backend.security.auth;
+package com.sook.backend.security.auth.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,7 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : #this")
+@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : #this.getUsername()")
 public @interface Auth {
 
 }

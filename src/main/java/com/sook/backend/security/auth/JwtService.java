@@ -1,47 +1,43 @@
 package com.sook.backend.security.auth;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.sook.backend.security.auth.dto.AuthDto;
+import com.sook.backend.common.exception.UserNotFoundException;
 import com.sook.backend.security.auth.dto.TokenDto;
 import com.sook.backend.security.auth.key.TokenProvider;
+import com.sook.backend.security.login.PrincipalDetails;
+import com.sook.backend.user.model.User;
+import com.sook.backend.user.repository.UserRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class JwtService {
 
-    private static final String AUTHORITY_SEPARATOR = ",";
-    private static final String AUTHORITY_KEY = "authorities";
-
+    private final UserRepository userRepository;
     private final TokenProvider accessTokenProvider;
     private final TokenProvider refreshTokenProvider;
 
-    public String generateAccessToken(OAuth2User oAuth2User) {
-        return accessTokenProvider.issueWith(buildClaimsFrom(oAuth2User));
+    public String generateAccessToken(UserDetails userDetails) {
+        return accessTokenProvider.issueWith(buildClaimsFrom(userDetails));
     }
 
-    public String generateRefreshToken(OAuth2User oAuth2User) {
-        return refreshTokenProvider.issueWith(buildClaimsFrom(oAuth2User));
+    public String generateRefreshToken(UserDetails userDetails) {
+        return refreshTokenProvider.issueWith(buildClaimsFrom(userDetails));
     }
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = accessTokenProvider.parse(accessToken);
         String email = claims.getSubject();
-        String joinedAuthorities = claims.get(AUTHORITY_KEY, String.class);
-        return new UsernamePasswordAuthenticationToken(new AuthDto(email), "", parseAuthorities(joinedAuthorities));
+        UserDetails userDetails = getUserBy(email);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     public TokenDto.AccessTokenDto renewWith(String refreshToken) {
@@ -50,22 +46,16 @@ public class JwtService {
         return new TokenDto.AccessTokenDto(accessToken);
     }
 
-    private Claims buildClaimsFrom(OAuth2User oAuth2User) {
+    private Claims buildClaimsFrom(UserDetails userDetails) {
         Claims claims = Jwts.claims();
-        claims.setSubject(oAuth2User.getName());
-        claims.put(AUTHORITY_KEY, joinAuthoritiesOf(oAuth2User.getAuthorities()));
+        claims.setSubject(userDetails.getUsername());
         return claims;
     }
 
-    private String joinAuthoritiesOf(Collection<? extends GrantedAuthority> authorities) {
-        return authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(AUTHORITY_SEPARATOR));
-    }
-
-    private Collection<? extends GrantedAuthority> parseAuthorities(String authorities) {
-        return Arrays.stream(authorities.split(AUTHORITY_SEPARATOR))
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+    @Transactional
+    UserDetails getUserBy(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+        return new PrincipalDetails(user);
     }
 }

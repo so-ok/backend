@@ -21,11 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private static final String HEADER_PREFIX = "Bearer ";
     private static final String EMPTY = "";
-    private static final String INVALID_TOKEN_MESSAGE = "invalid token provided";
 
     private final JwtService jwtService;
 
@@ -35,8 +34,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             Authentication authentication = jwtService.getAuthentication(parseTokenFrom(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (InvalidTokenException exception) {
-            log.error(INVALID_TOKEN_MESSAGE);
+        } catch (InvalidTokenException ignored) {
+
         }
         filterChain.doFilter(request, response);
     }
