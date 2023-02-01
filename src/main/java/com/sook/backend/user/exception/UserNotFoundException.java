@@ -1,4 +1,6 @@
-package com.sook.backend.common.exception;
+package com.sook.backend.user.exception;
+
+import com.sook.backend.common.exception.NotFoundException;
 
 public class UserNotFoundException extends NotFoundException {
     public UserNotFoundException() {

@@ -1,48 +1,48 @@
 package com.sook.backend.user.dto;
 
-import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-
 import com.sook.backend.user.model.User;
 
 import lombok.Builder;
 
-public record UserDto(
-        String username,
-        String email,
-        String image,
-        List<AuthorityDto> authorities
-) {
+public class UserDto {
 
-    @Builder
-    public UserDto {
-    }
-
-    public static UserDto of(User entity) {
-        List<AuthorityDto> authorities = entity.getAuthorities().stream()
-                .map(AuthorityDto::of)
-                .toList();
-
-        return UserDto.builder()
-                .username(entity.username())
-                .email(entity.email())
-                .image(entity.image())
-                .authorities(authorities)
-                .build();
-    }
-
-    public record AuthorityDto(
-            String name
+    public record Response(
+            String username,
+            String email,
+            String image
     ) {
+
         @Builder
-        public AuthorityDto {
+        public Response {
         }
 
-        public static AuthorityDto of(GrantedAuthority authority) {
-            return AuthorityDto.builder()
-                    .name(authority.getAuthority())
+        public static Response of(User entity) {
+            return Response.builder()
+                    .username(entity.username())
+                    .email(entity.email())
+                    .image(entity.image())
                     .build();
         }
     }
+
+    public record RegisterRequest(
+            String username,
+            String password,
+            String email,
+            String image
+    ) {
+
+        @Builder
+        public RegisterRequest {
+        }
+
+        public static Response of(User entity) {
+            return Response.builder()
+                    .username(entity.username())
+                    .email(entity.email())
+                    .image(entity.image())
+                    .build();
+        }
+    }
+
 }
