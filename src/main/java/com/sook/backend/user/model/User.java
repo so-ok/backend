@@ -36,7 +36,7 @@ public class User extends BaseModel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "user_id", unique = true, nullable = false)
+    @Column(name = "user_id", unique = true)
     private String userId;
 
     @Column(name = "username", nullable = false)
@@ -51,7 +51,7 @@ public class User extends BaseModel {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "oauth_provider", nullable = false)
+    @Column(name = "oauth_provider")
     private String oauthProvider;
 
     @Builder.Default
