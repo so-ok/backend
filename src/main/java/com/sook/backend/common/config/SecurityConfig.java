@@ -1,5 +1,7 @@
 package com.sook.backend.common.config;
 
+import static org.springframework.http.HttpMethod.POST;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -13,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.filter.CorsFilter;
 
 import com.sook.backend.security.auth.JwtAuthenticationEntryPoint;
 import com.sook.backend.security.auth.JwtAuthorizationFilter;
@@ -40,6 +42,7 @@ public class SecurityConfig {
     private final OAuth2FailureHandler failureHandler;
     private final CookieOAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
     private final PrincipalDetailsService principalDetailsService;
+    private final CorsFilter corsFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,6 +54,7 @@ public class SecurityConfig {
 
                 .formLogin().disable()
                 .httpBasic().disable()
+                .addFilter(corsFilter)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtService))
 
                 .authorizeRequests()
@@ -58,7 +62,7 @@ public class SecurityConfig {
                 .antMatchers("/auth/renew").permitAll()
                 .antMatchers("/api/pill/**").permitAll()
                 .antMatchers("/api/user/{email}").permitAll()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .mvcMatchers(POST, "/api/user").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
