@@ -51,10 +51,10 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(corsFilter) // Spring Security로 들어오는 OPTIONS 처리
 
                 .formLogin().disable()
                 .httpBasic().disable()
+                .addFilter(corsFilter)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtService))
 
                 .authorizeRequests()
